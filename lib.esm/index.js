@@ -1,10 +1,9 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var fixednumber_1 = require("@ethersproject/bignumber/fixednumber");
-var logger_1 = require("@ethersproject/logger");
-var _version_1 = require("./_version");
-var logger = new logger_1.Logger(_version_1.version);
-var names = [
+import { formatFixed, parseFixed } from "@ethersproject/bignumber/fixednumber";
+import { Logger } from "@ethersproject/logger";
+import { version } from "./_version";
+const logger = new Logger(version);
+const names = [
     "wei",
     "kwei",
     "mwei",
@@ -15,14 +14,14 @@ var names = [
 ];
 // Some environments have issues with RegEx that contain back-tracking, so we cannot
 // use them.
-function commify(value) {
-    var comps = String(value).split(".");
+export function commify(value) {
+    let comps = String(value).split(".");
     if (comps.length > 2 || !comps[0].match(/^-?[0-9]*$/) || (comps[1] && !comps[1].match(/^[0-9]*$/)) || value === "." || value === "-.") {
         logger.throwArgumentError("invalid value", "value", value);
     }
     // Make sure we have at least one whole digit (0 if none)
-    var whole = comps[0];
-    var negative = "";
+    let whole = comps[0];
+    let negative = "";
     if (whole.substring(0, 1) === "-") {
         negative = "-";
         whole = whole.substring(1);
@@ -34,50 +33,45 @@ function commify(value) {
     if (whole === "") {
         whole = "0";
     }
-    var suffix = "";
+    let suffix = "";
     if (comps.length === 2) {
         suffix = "." + (comps[1] || "0");
     }
-    var formatted = [];
+    let formatted = [];
     while (whole.length) {
         if (whole.length <= 3) {
             formatted.unshift(whole);
             break;
         }
         else {
-            var index = whole.length - 3;
+            let index = whole.length - 3;
             formatted.unshift(whole.substring(index));
             whole = whole.substring(0, index);
         }
     }
     return negative + formatted.join(",") + suffix;
 }
-exports.commify = commify;
-function formatUnits(value, unitName) {
+export function formatUnits(value, unitName) {
     if (typeof (unitName) === "string") {
-        var index = names.indexOf(unitName);
+        let index = names.indexOf(unitName);
         if (index !== -1) {
             unitName = 3 * index;
         }
     }
-    return fixednumber_1.formatFixed(value, (unitName != null) ? unitName : 18);
+    return formatFixed(value, (unitName != null) ? unitName : 18);
 }
-exports.formatUnits = formatUnits;
-function parseUnits(value, unitName) {
+export function parseUnits(value, unitName) {
     if (typeof (unitName) === "string") {
-        var index = names.indexOf(unitName);
+        let index = names.indexOf(unitName);
         if (index !== -1) {
             unitName = 3 * index;
         }
     }
-    return fixednumber_1.parseFixed(value, (unitName != null) ? unitName : 18);
+    return parseFixed(value, (unitName != null) ? unitName : 18);
 }
-exports.parseUnits = parseUnits;
-function formatEther(wei) {
+export function formatEther(wei) {
     return formatUnits(wei, 18);
 }
-exports.formatEther = formatEther;
-function parseEther(ether) {
+export function parseEther(ether) {
     return parseUnits(ether, 18);
 }
-exports.parseEther = parseEther;
