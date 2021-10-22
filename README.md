@@ -1,36 +1,27 @@
-Ethereum Unit Conversion Utilities
-==================================
-
-This sub-module is part of the [ethers project](https://github.com/ethers-io/ethers.js).
+# Tron Unit Conversion Utilities
 
 It contains functions to convert between string representations and numeric
 representations of numbers, including those out of the range of JavaScript.
 
-For more information, see the [documentation](https://docs.ethers.io/v5/api/utils/display-logic/).
+For more information, see the [documentation](https://docs.tron.io/v5/api/utils/display-logic/).
 
+## Importing
 
-Importing
----------
-
-Most users will prefer to use the [umbrella package](https://www.npmjs.com/package/ethers),
+Most users will prefer to use the [umbrella package](https://www.npmjs.com/package/tron),
 but for those with more specific needs, individual components can be imported.
 
 ```javascript
 const {
+  formatUnits,
+  parseUnits,
 
-    formatUnits,
-    parseUnits,
+  formatEther,
+  parseEther,
 
-    formatEther,
-    parseEther,
-
-    commify
-
-} = require("@ethersproject/units");
+  commify
+} = require('@tronproject/units');
 ```
 
-
-License
--------
+## License
 
 MIT License
